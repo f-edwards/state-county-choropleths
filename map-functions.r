@@ -228,6 +228,7 @@ statemap<-function(state.dat, map.var, nquant, labels){
   if(n.maps==1){
     state.dat$q<-as.factor(rq(map.var, nquant))
     state.dat$c<-as.factor(labels)
+    state.long<-state.dat
   }
   
   if(n.maps>1){
