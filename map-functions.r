@@ -85,7 +85,9 @@ county_map$subregion<-ifelse(county_map$subregion=="de kalb", "dekalb", county_m
 county_map$subregion<-ifelse(county_map$subregion=="du page", "dupage", county_map$subregion)
 county_map$subregion<-ifelse(county_map$subregion=="la salle", "lasalle", county_map$subregion)
 
-cnty.dat$region<-NA
+if("TX"%in%cnty.dat$state){cnty.dat<-cleanstate(cnty.dat$state)}
+cnty.dat$region<-tolower(cnty.dat$state)
+
 cnty.dat<-cleanstate(cnty.dat)
 cnty.dat$subregion<-tolower(cnty.dat$cname)
 cnty.dat$subregion<-as.character(strsplit(cnty.dat$subregion, " county"))
@@ -107,7 +109,7 @@ if(n.maps>1){
    }
 }
 
-choro<-left_join(county_map, cnty.long, by=c("subregion", "region"))
+choro<-left_join(county_map, cnty.long, by=c("region","subregion"))
 choro <- choro[order(choro$order), ]
 
 ### IF FOR LIST LENGTH
@@ -216,7 +218,8 @@ statemap<-function(state.dat, map.var, nquant, labels){
   
   state_map <- map_data("state")
   
-  state.dat$region<-NA
+  state.dat$region<-state.dat$state
+  if("TX"%in%state.dat$state){cnty.dat<-cleanstate(state.dat$state)}
   state.dat<-cleanstate(state.dat)
  
   ### make long df for faceting
